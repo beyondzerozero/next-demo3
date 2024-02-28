@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
+import Header from "./components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const inter = Inter({ subsets: ["latin"] });
+const noto = Noto_Sans_KR({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Next.js 강좌",
@@ -16,10 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider afterSignInUrl="/" afterSignUpUrl="/onbording">
-      <html lang="ko">
-        <body className={inter.className}>{children}</body>
-      </html>
+    <ClerkProvider>
+      <body lang="ko">
+        <Header />
+        <main>{children}</main>
+      </body>
     </ClerkProvider>
   );
 }

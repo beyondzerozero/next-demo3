@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  // ID는 Clerk 사용자ID를 사용하므로 기본난수ID는 사용하지 않음
+  id        String      @id
+  name      String
+  createdAt DateTime @default(now())
+  posts Post[]
+}
+
+model Post {
+  // ID는 썸네일 이미지에서 사용하기 편라한 매뉴얼 생성되므로 난수ID는 사용안함 
+  id           String   @id
+  thumbnailURL String?
+  title        String   @db.VarChar(140)
+  body         String   @db.VarChar(140)
+  author       User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     String
+  createdAt    DateTime @default(now())
+}
